@@ -6,41 +6,85 @@
 #include "import/utils.h"
 #include "import/macros.h"
 
-void BIT_TESTS(BIT_TYPE a, BIT_TYPE b)
-{
-    bitPrint(a);
-    puts("");
-    bitPrint(b);
-    puts("");
-
-    printf("diferencias: %d\n", bitDiff(a, b));
-}
+// #include "tests.h" // elimnar para el relase
 
 /**
- * Contruye una grafo donde los nodos solo tienen un bit de 
- * diferencia 
-*/
-void ADJACENCY_TEST(int len_minterms, BIT_TYPE minterms[])
+ * states estado 1 no negado, 0 es negado
+ * undefined mascara del estado de las variables '1' activo '0' indefinido
+ */
+typedef struct Minterm
 {
-    char adjacency[MAX_VARS][MAX_VARS] = {0};
+    BIT_TYPE states;
+    BIT_TYPE undefined;
+} Minterm;
 
-    for (int i = 0; i < len_minterms; i++)
+void MintermInit(Minterm *var, BIT_TYPE state, BIT_TYPE undefineds)
+{
+    var->states = state;
+    var->undefined = undefineds;
+}
+
+void MintermDisplay(char vars, Minterm *min)
+{
+    for (char i = vars - 1; i >= 0; i--)
     {
-        for (int j = 0; j < len_minterms; j++)
-        {
-            adjacency[i][j] = bitDiff(minterms[i], minterms[j]) == 1;
-            printf(adjacency[i][j] == 1 ? "1 " : "- ");
-        }
-        puts("");
+        if (bitState(min->undefined, i))
+            printf(bitState(min->states, i) ? "1" : "0");
+        else
+            printf("-");
     }
+}
+
+char MintermAdjacent(Minterm *a, Minterm *b)
+{
+    // Implicante: numero de variables indefinidas
+    char sameImplicantSize = (a->undefined == b->undefined);
+
+    if (!sameImplicantSize)
+    {
+        return 0;
+    }
+
+    // aplicar la mascara y contar las diferencias
+    BIT_TYPE implicantMask = a->undefined;
+    BIT_TYPE aMask = a->states & implicantMask;
+    BIT_TYPE bMask = b->states & implicantMask;
+
+    return bitDiff(aMask, bMask) == 1;
+}
+
+Minterm MintermMerge(Minterm *a, Minterm *b)
+{
+    Minterm foo;
+    BIT_TYPE diferences =  a->states & b->states;
+
+    MintermInit(&foo, a->states & diferences, diferences);
+    return foo;
 }
 
 int main()
 {
-    BIT_TESTS(12, 4);
+    int n = 3; // numero de variables
 
-    BIT_TYPE minterms[] = {4, 8, 9, 10, 11, 12, 14, 15};
-    ADJACENCY_TEST(ARRAY_LENGHT(minterms), minterms);
+    Minterm a;
+    MintermInit(&a, 0b001, 0b101);
 
-    return EXIT_SUCCESS;
+    Minterm b;
+    MintermInit(&b, 0b101, 0b101);
+
+    printf("los terminos '");
+    MintermDisplay(n, &a);
+    printf("' y '");
+    MintermDisplay(n, &b);
+    printf("' Son: ");
+
+    printf(MintermAdjacent(&a, &b) ? "Adyacentes" : "NO Adyacentes");
+    puts("");
+
+    printf("El resultado de la union es: ");
+    Minterm foo = MintermMerge(&a, &b);
+    MintermDisplay(n, &foo);
+
+    puts("");
+    return 0;
 }
