@@ -2,63 +2,45 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/**
- * Tipo de parametro que se para a las funciones
- * limita la cantidad maxima de variables que puede usar el programa
- */
-#define PARAMETER_TYPE char
+#include "import/bit.h"
+#include "import/utils.h"
+#include "import/macros.h"
 
-/**
- * Numero maximo de variables en el programa.
- * esta limitado por la longitud en bites del PARAMETER_TYPE
- */
-#define MAX_VARS 8
-
-/**
- * @param value numero de interes 
- * @param position posicion 
- * @return estado del bit en la posicion
-*/
-char BitState(PARAMETER_TYPE value, char position)
+void BIT_TESTS(BIT_TYPE a, BIT_TYPE b)
 {
-    return (value & (1 << position)) ? 1 : 0;
+    bitPrint(a);
+    puts("");
+    bitPrint(b);
+    puts("");
+
+    printf("diferencias: %d\n", bitDiff(a, b));
 }
 
 /**
- * @return numero de diferencias 
+ * Contruye una grafo donde los nodos solo tienen un bit de 
+ * diferencia 
 */
-char BitDiff(PARAMETER_TYPE a, PARAMETER_TYPE b)
+void ADJACENCY_TEST(int len_minterms, BIT_TYPE minterms[])
 {
-    int mask = a ^ b; // diferencias '1' valore iguales '0'
-    int differences = 0;
+    char adjacency[MAX_VARS][MAX_VARS] = {0};
 
-    for (char i = MAX_VARS - 1; i >= 0; i--)
-        differences += BitState(mask, i);
-
-    return differences;
-}
-
-/**
- * Coloca la representacion de value en stdout}
- * @param value 
-*/
-void BitPrint(PARAMETER_TYPE value)
-{
-    for (char i = MAX_VARS - 1; i >= 0; i--)
-        printf(BitState(value, i) ? "1" : "_");
+    for (int i = 0; i < len_minterms; i++)
+    {
+        for (int j = 0; j < len_minterms; j++)
+        {
+            adjacency[i][j] = bitDiff(minterms[i], minterms[j]) == 1;
+            printf(adjacency[i][j] == 1 ? "1 " : "- ");
+        }
+        puts("");
+    }
 }
 
 int main()
 {
-    char a = 0b00001010;
-    char b = 0b00000011;
+    BIT_TESTS(12, 4);
 
-    BitPrint(a);
-    puts("");
-    BitPrint(b);
-    puts("");
-
-    printf("diferencias: %d\n", BitDiff(a, b));
+    BIT_TYPE minterms[] = {4, 8, 9, 10, 11, 12, 14, 15};
+    ADJACENCY_TEST(ARRAY_LENGHT(minterms), minterms);
 
     return EXIT_SUCCESS;
 }
