@@ -3,6 +3,7 @@
         "stdio.h": "c",
         "stdlib.h": "c",
         "macros.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "minterm.h": "c"
     }
 }

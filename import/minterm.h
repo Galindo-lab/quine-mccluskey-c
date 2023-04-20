@@ -91,6 +91,20 @@ char MintermAdjacent(Minterm *a, Minterm *b)
     return bitDiff(aMask, bMask) == 1;
 }
 
+char MintermEquals(Minterm *a, Minterm *b)
+{
+    if (a->undefined != b->undefined)
+    {
+        return 0;
+    }
+
+    BIT_TYPE implicantMask = a->undefined;
+    BIT_TYPE aMask = a->states & implicantMask;
+    BIT_TYPE bMask = b->states & implicantMask;
+
+    return bitDiff(aMask, bMask) == 0;
+}
+
 /**
  * Combinar dos minterminnos, este metodo no hace las validaciones si esto
  * es posible o no, para realizar las validaciones revisar 'MintermAdjacent'
