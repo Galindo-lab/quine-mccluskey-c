@@ -11,7 +11,7 @@
  * Tipo de parametro que se para a las funciones
  * limita la cantidad maxima de variables que puede usar el programa
  */
-#define BIT_TYPE char
+#define BIT_TYPE unsigned char
 
 /**
  * Numero maximo de variables en el programa.
@@ -73,34 +73,32 @@ void MintermInit(Minterm *var, BIT_TYPE state, BIT_TYPE undefineds)
  * @param b
  * @return boolean
  */
-char MintermAdjacent(Minterm *a, Minterm *b)
+char MintermAdjacent(Minterm a, Minterm b)
 {
-    // Implicante: numero de variables indefinidas
-    char sameImplicantSize = (a->undefined == b->undefined);
-
-    if (!sameImplicantSize)
+    if (a.undefined != b.undefined)
     {
+        // Implicante: numero de variables indefinidas
         return 0;
     }
 
     // aplicar la mascara y contar las diferencias
-    BIT_TYPE implicantMask = a->undefined;
-    BIT_TYPE aMask = a->states & implicantMask;
-    BIT_TYPE bMask = b->states & implicantMask;
+    BIT_TYPE implicantMask = a.undefined;
+    BIT_TYPE aMask = a.states & implicantMask;
+    BIT_TYPE bMask = b.states & implicantMask;
 
     return bitDiff(aMask, bMask) == 1;
 }
 
-char MintermEquals(Minterm *a, Minterm *b)
+char MintermEquals(Minterm a, Minterm b)
 {
-    if (a->undefined != b->undefined)
+    if (a.undefined != b.undefined)
     {
         return 0;
     }
 
-    BIT_TYPE implicantMask = a->undefined;
-    BIT_TYPE aMask = a->states & implicantMask;
-    BIT_TYPE bMask = b->states & implicantMask;
+    BIT_TYPE implicantMask = a.undefined;
+    BIT_TYPE aMask = a.states & implicantMask;
+    BIT_TYPE bMask = b.states & implicantMask;
 
     return bitDiff(aMask, bMask) == 0;
 }
@@ -112,11 +110,10 @@ char MintermEquals(Minterm *a, Minterm *b)
  * @param b
  * @return Minterm 
 */
-Minterm MintermMerge(Minterm *a, Minterm *b)
+Minterm MintermMerge(Minterm a, Minterm b)
 {
     Minterm foo;
-    BIT_TYPE diferences = a->states & b->states;
-
-    MintermInit(&foo, a->states & diferences, diferences);
+    BIT_TYPE diferences = (a.states ^ b.states) ^ a.undefined;
+    MintermInit(&foo, a.states, diferences);
     return foo;
 }

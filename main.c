@@ -9,11 +9,12 @@
 
 // #include "tests.h" // elimnar para el relase
 
-char MintermExist(int last, Minterm *list, Minterm *minterm)
+int MintermExist(int last, Minterm *list, Minterm minterm)
 {
     for (int i = 0; i < last; i++)
     {
-        if (MintermEquals(&(list[i]), minterm))
+        Minterm foo = list[i];
+        if (MintermEquals(foo, minterm))
         {
             // si hay un termino igual
             return 1;
@@ -25,26 +26,58 @@ char MintermExist(int last, Minterm *list, Minterm *minterm)
 
 int main()
 {
-    int nvars = 3;
-    BIT_TYPE minterms[] = {0,2,4,6,7};
-    int lenght = ARRAY_LENGHT(minterms);
+    int nvars = 6;
+    BIT_TYPE minterms[] = {2, 4, 6};
+    int lenght =  ARRAY_LENGHT(minterms);
 
     int array_size = nvars * lenght;
     Minterm *reducciones = (Minterm *)calloc(array_size, sizeof(Minterm));
+    // Minterm reducciones[15] = {0};
     int last = 0;
 
-    Minterm ac;
     for (int i = 0; i < lenght; i++)
     {
-        MintermInit(&ac, minterms[i], ~0);
+        // cargar los minterminos a la lista
+        MintermInit(&(reducciones[i]), minterms[i], ~0);
+        last++;
     }
+
+    int convinaciones = 0;
+    do
+    {
+        convinaciones = 0;
+        int bar = last;
+        for (int i = 0; i < bar; i++)
+        {
+            for (int j = i+1; j < bar; j++)
+            {
+                Minterm reducciones_i = reducciones[i];
+                Minterm reducciones_j = reducciones[j];
+                Minterm merge;
+
+                if (MintermAdjacent(reducciones_i, reducciones_j))
+                {
+                    merge = MintermMerge(reducciones_j, reducciones_i);
+                    if (!MintermExist(last, reducciones, merge))
+                    {
+                        reducciones[last] = merge;
+                        last++;
+                        convinaciones++;
+                    }
+                }
+            }
+        }
+
+    } while (convinaciones > 0);
+
+    // -----------------------------------------
 
     for (int i = 0; i < last; i++)
     {
+        printf("%3d: ", i);
         MintermDisplay(nvars, &(reducciones[i]));
         puts("");
     }
-    
 
     return 0;
 }
