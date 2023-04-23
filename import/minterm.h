@@ -17,7 +17,7 @@
  * Numero maximo de variables en el programa.
  * esta limitado por la longitud en bites del BIT_TYPE
  */
-#define BIT_MAX_VARS 8
+#define BIT_MAX_VARS 6
 
 /**
  * States estado 1 no negado, 0 es negado
@@ -25,8 +25,8 @@
  */
 typedef struct Minterm
 {
-    BIT_TYPE states;
-    BIT_TYPE undefined;
+    BIT_TYPE states:BIT_MAX_VARS;
+    BIT_TYPE undefined:BIT_MAX_VARS;
 } Minterm;
 
 /**
@@ -35,9 +35,13 @@ typedef struct Minterm
  * @param position
  * @return state
  */
-char bitState(BIT_TYPE value, char position)
+int bitState(BIT_TYPE value, int position)
 {
-    return (value & (1 << position)) ? 1 : 0;
+    int mask = (1 << position);
+    int valueandmask = value & mask ;
+    int var = valueandmask ? 1 : 0;
+
+    return var;
 }
 
 /**

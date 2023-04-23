@@ -26,11 +26,25 @@ int MintermExist(int last, Minterm *list, Minterm minterm)
 
 int main()
 {
-    int nvars = 6;
-    BIT_TYPE minterms[] = {2, 4, 6};
-    int lenght =  ARRAY_LENGHT(minterms);
+    //int nvars = 3;
+    //BIT_TYPE minterms[] = {0, 1, 2, 3, 4, 5, 6, 7};
 
-    int array_size = nvars * lenght;
+    int nvars = 4;
+    //BIT_TYPE minterms[] = {0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    BIT_TYPE minterms[] = {0, 4, 5, 6, 7, 8, 9, 12, 13, 14, 15};
+
+    //int nvars = 5;
+    //BIT_TYPE minterms[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+
+    //int nvars = 6;
+    //BIT_TYPE minterms[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63};
+
+    //int nvars = 2;
+    //BIT_TYPE minterms[] = {0,1,2,3};
+
+    int lenght = ARRAY_LENGHT(minterms);
+
+    int array_size = 800;//nvars * lenght;
     Minterm *reducciones = (Minterm *)calloc(array_size, sizeof(Minterm));
     // Minterm reducciones[15] = {0};
     int last = 0;
@@ -49,7 +63,7 @@ int main()
         int bar = last;
         for (int i = 0; i < bar; i++)
         {
-            for (int j = i+1; j < bar; j++)
+            for (int j = i + 1; j < bar; j++)
             {
                 Minterm reducciones_i = reducciones[i];
                 Minterm reducciones_j = reducciones[j];
@@ -75,9 +89,11 @@ int main()
     for (int i = 0; i < last; i++)
     {
         printf("%3d: ", i);
-        MintermDisplay(nvars, &(reducciones[i]));
+        MintermDisplay(nvars, reducciones[i]);
         puts("");
     }
+
+    printf("array size: %d\n", array_size);
 
     return 0;
 }

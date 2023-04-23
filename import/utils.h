@@ -10,13 +10,14 @@ void bitPrint(BIT_TYPE value)
 }
 
 
-void MintermDisplay(char vars, Minterm *min)
+void MintermDisplay(int vars, Minterm min)
 {
-    for (char i = vars - 1; i >= 0; i--)
+    for (int i = vars - 1; i >= 0; i--)
     {
-        if (bitState(min->undefined, i))
+        if (bitState(min.undefined, i))
         {
-            printf(bitState(min->states, i) ? "1" : "0");
+            int state = bitState(min.states, i);
+            printf(state ? "1" : "0");
         }
         else
         {
