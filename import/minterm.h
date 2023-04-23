@@ -65,10 +65,11 @@ char bitDiff(BIT_TYPE a, BIT_TYPE b)
  * @param state valor del mintermino
  * @param undefineds valores descartados del mintermino
  */
-void MintermInit(Minterm *var, BIT_TYPE state, BIT_TYPE undefineds)
+Minterm MintermInit(Minterm *var, BIT_TYPE state, BIT_TYPE undefineds)
 {
     var->states = state;
     var->undefined = undefineds;
+    return *var;
 }
 
 /**
