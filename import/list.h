@@ -140,6 +140,7 @@ void ListRemove(List *list, int index)
     if (index == 0)
     {
         Node *next = (list->data)->next;
+        NodeFree(list->data);
         free(list->data);
         list->data = next;
         list->lenght -= 1;
@@ -155,10 +156,10 @@ void ListRemove(List *list, int index)
     list->lenght -= 1;
 }
 
-void ListFree(List *list) 
+void ListFree(List *list)
 {
     while (!ListEmpty(list))
-        ListRemove(list,0);
+        ListRemove(list, 0);
 }
 
 #endif
