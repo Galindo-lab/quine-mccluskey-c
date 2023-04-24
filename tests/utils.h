@@ -25,24 +25,3 @@ void MintermDisplay(int vars, Minterm min)
         }
     }
 }
-
-void displayGraph(Graph *graph)
-{
-    int foo = graphLenght(graph);
-
-    for (int i = 0; i < foo; i++)
-    {
-        for (int j = 0; j < foo; j++)
-        {
-            if (!graphValidPosition(graph, i, j))
-            {
-                printf(" - ");
-                continue;
-            }
-
-            printf("%2d ", graphGetEdgeWeight(graph, i, j));
-        }
-
-        printf("\n");
-    }
-}
