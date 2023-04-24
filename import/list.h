@@ -5,7 +5,6 @@
  * En este archivo se almacenan todos los métodos para controlar una lista
  * enlazada.
  */
-
 #ifndef linkedList
 #define linkedList
 

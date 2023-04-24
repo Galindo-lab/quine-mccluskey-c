@@ -1,11 +1,12 @@
-
 /**
  * AUTOR: Luis Eduardo Galindo Amaya                         FECHA: 15-04-2023
  *
  * DESCRIPCIÓN:
- * Bibloteca para trabajar los minterminos del metodo de Quine-McCluskey y 
+ * Bibloteca para trabajar los teminos del metodo de Quine-McCluskey y
  * algunas utilidades para trbajar numeros binarios.
  */
+#ifndef minterm
+#define minterm
 
 /**
  * Tipo de parametro que se para a las funciones
@@ -25,8 +26,8 @@
  */
 typedef struct Minterm
 {
-    BIT_TYPE states:BIT_MAX_VARS;
-    BIT_TYPE undefined:BIT_MAX_VARS;
+    BIT_TYPE states : BIT_MAX_VARS;
+    BIT_TYPE undefined : BIT_MAX_VARS;
 } Minterm;
 
 /**
@@ -38,7 +39,7 @@ typedef struct Minterm
 int bitState(BIT_TYPE value, int position)
 {
     int mask = (1 << position);
-    int valueandmask = value & mask ;
+    int valueandmask = value & mask;
     int var = valueandmask ? 1 : 0;
 
     return var;
@@ -111,10 +112,10 @@ char MintermEquals(Minterm a, Minterm b)
 /**
  * Combinar dos minterminnos, este metodo no hace las validaciones si esto
  * es posible o no, para realizar las validaciones revisar 'MintermAdjacent'
- * @param a 
+ * @param a
  * @param b
- * @return Minterm 
-*/
+ * @return Minterm
+ */
 Minterm MintermMerge(Minterm a, Minterm b)
 {
     Minterm foo;
@@ -122,3 +123,5 @@ Minterm MintermMerge(Minterm a, Minterm b)
     MintermInit(&foo, a.states, diferences);
     return foo;
 }
+
+#endif

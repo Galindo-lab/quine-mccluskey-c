@@ -4,7 +4,7 @@
 #include <assert.h>
 
 #include "import/minterm.h"
-#include "import/utils.h"
+#include "tests/utils.h"
 #include "import/macros.h"
 
 // #include "tests.h" // elimnar para el relase
