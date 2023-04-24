@@ -15,7 +15,8 @@
 /**
  * Obtener el valor en una posicion y converitirlo a su tipo
  */
-#define LIST_GET(TIPE, LIST, INDEX) (*((TIPE *)(ListGetNode(LIST, INDEX)->data)))
+#define LIST_GET(TYPE, LIST, INDEX) \
+    (*((TYPE *)(ListGetNode(LIST, INDEX)->data)))
 
 /**
  * Nodo de la lista
@@ -151,6 +152,7 @@ void ListRemove(List *list, int index)
     Node *curret = prev->next;
 
     prev->next = curret->next;
+    NodeFree(curret);
     free(curret);
     list->lenght -= 1;
 }
