@@ -1,3 +1,3 @@
 compile:
 	gcc -W -Wall -pedantic -std=c99 main.c
-	./a.out
+	valgrind --tool=memcheck --leak-check=yes ./a.out
