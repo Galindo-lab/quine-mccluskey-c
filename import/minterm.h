@@ -74,6 +74,26 @@ Minterm MintermInit(Minterm *var, BIT_TYPE state, BIT_TYPE undefineds)
 }
 
 /**
+ * Reserva la memoria para un termino
+*/
+Minterm* MintermCreate(BIT_TYPE state, BIT_TYPE undefineds)
+{
+    Minterm *foo = malloc(sizeof(Minterm));
+
+    if (!foo)
+        return NULL;
+    
+    MintermInit(foo, state, undefineds);
+    
+    return foo;
+}
+
+void MintermFree(Minterm *term)
+{
+    free(term);
+}
+
+/**
  * Determinar si dos minterminos son adyacentes
  * @param a
  * @param b

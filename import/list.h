@@ -79,6 +79,7 @@ int ListLenght(List *list)
 
 /**
  * Inicializar lista
+ * @param List puntero a la lista
  */
 List ListInit(List *list)
 {
