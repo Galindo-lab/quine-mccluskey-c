@@ -24,5 +24,18 @@ void MintermDisplay(int vars, Minterm min)
         }
     }
 
-    printf("    states:%3u  undefineds:%3u", min.states, min.undefined);
+    printf("  |  states:%3u  undefined:%3u", min.states, min.undefined);
+}
+
+void printMinterms(List *terms, int nvars)
+{
+    puts("");
+    for (int i = 0; i < ListLenght(terms); i++)
+    {
+        Minterm current = LIST_GET(Minterm, terms, i);
+
+        printf("%3d: ", i);
+        MintermDisplay(nvars, current);
+        puts("");
+    }
 }
