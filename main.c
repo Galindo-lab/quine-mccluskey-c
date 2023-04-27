@@ -32,6 +32,7 @@ Minterm *TermCopy(Minterm *foo)
 int TermsConvine(List *terms, List *minterms)
 {
     int ac_total = 0;
+    int iter = 0;
     
     for (int i = ListLenght(terms) - 1; i >= 0; i--)
     {
@@ -40,8 +41,10 @@ int TermsConvine(List *terms, List *minterms)
         Minterm merge;
         int merged = 0;
         
-        for (int j = ListLenght(terms)-ac_total-1; j >= 0; j--)
+        //for (int j = ListLenght(terms)-ac_total-1; j >= 0; j--)
+        for (int j = ListLenght(terms) - 1 -ac_total; j >= 0; j--)
         {
+            iter++;
             ter_i = LIST_GET(Minterm, terms, i);
             ter_j = LIST_GET(Minterm, terms, j);
 
@@ -70,8 +73,9 @@ int TermsConvine(List *terms, List *minterms)
     }
 
     printf("%d nodos en la lista\n"
-           "%d terminos creados \n",
-           ListLenght(terms), ac_total);
+           "%d terminos creados \n"
+           "%d iteraciones\n",
+           ListLenght(terms), ac_total, iter);
     return ac_total;
 }
 
