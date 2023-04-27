@@ -1,14 +1,13 @@
 
 /**
  * Coloca la representacion de value en stdout
- * @param value 
-*/
+ * @param value
+ */
 void bitPrint(BIT_TYPE value)
 {
     for (char i = BIT_MAX_VARS - 1; i >= 0; i--)
         printf(bitState(value, i) ? "1" : "_");
 }
-
 
 void MintermDisplay(int vars, Minterm min)
 {
@@ -24,4 +23,6 @@ void MintermDisplay(int vars, Minterm min)
             printf("-");
         }
     }
+
+    printf("    states:%3u  undefineds:%3u", min.states, min.undefined);
 }
