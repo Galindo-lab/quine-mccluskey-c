@@ -31,20 +31,18 @@ Minterm *TermCopy(Minterm *foo)
 
 int TermsConvine(List *terms, List *minterms)
 {
-    int ac_total = 0;
-    int iter = 0;
-    
+    int ac_total = 0; // uniones totales de los terminos 
+    int merged = 0;   // numero de uniones del termino i 
+
     for (int i = ListLenght(terms) - 1; i >= 0; i--)
     {
         Minterm ter_i;
         Minterm ter_j;
         Minterm merge;
-        int merged = 0;
-        
-        //for (int j = ListLenght(terms)-ac_total-1; j >= 0; j--)
-        for (int j = ListLenght(terms) - 1 -ac_total; j >= 0; j--)
+        merged = 0;
+
+        for (int j = ListLenght(terms) - 1 - ac_total; j >= 0; j--)
         {
-            iter++;
             ter_i = LIST_GET(Minterm, terms, i);
             ter_j = LIST_GET(Minterm, terms, j);
 
@@ -66,16 +64,12 @@ int TermsConvine(List *terms, List *minterms)
         {
             // si el termino no se unio a nada, agregar a los minterminos
             ListInsert(minterms, 0, TermCopy(&ter_i));
-            //printMinterms(minterms, 4);
         }
-
-        // ListRemove(terms, i);
     }
 
     printf("%d nodos en la lista\n"
-           "%d terminos creados \n"
-           "%d iteraciones\n",
-           ListLenght(terms), ac_total, iter);
+           "%d terminos creados \n",
+           ListLenght(terms), ac_total);
     return ac_total;
 }
 
@@ -89,6 +83,25 @@ void printMinterms(List *terms, int nvars)
         printf("%03d: ", i);
         MintermDisplay(nvars, current);
         puts("");
+    }
+}
+
+void findMinterms(List *terms, List *minterms)
+{
+    int cnv = 0;
+    int tanterior = ListLenght(terms);
+    while ((cnv = TermsConvine(terms, minterms)))
+    {
+        // printMinterms(&terms, nvars);
+        printf("eliminar %d terminos\n\n", tanterior);
+        for (int i = 0; i < tanterior; i++)
+        {
+            ListRemove(terms, 0);
+        }
+
+        // puts("----");
+        // printMinterms(&terms, nvars);
+        tanterior = ListLenght(terms);
     }
 }
 
@@ -106,14 +119,14 @@ int main()
     // int nvars = 3;
     // BIT_TYPE act[] = {0, 1, 2, 4, 7};
 
-    //int nvars = 4;
-    //BIT_TYPE act[] = {4, 8, 9, 10, 11, 12, 14, 15};
+    // int nvars = 4;
+    // BIT_TYPE act[] = {4, 8, 9, 10, 11, 12, 14, 15};
 
     // int nvars = 4;
     // BIT_TYPE act[] = {4,12};
 
     int nvars = 6;
-    BIT_TYPE act[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
+    BIT_TYPE act[] = {0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63};
 
     // int nvars = 6;
     // BIT_TYPE act[] = {0, 1, 2, 3};
@@ -124,21 +137,7 @@ int main()
         ListInsert(&terms, 0, MintermCreate(act[i], ~0));
     }
 
-    int cnv = 0;
-    int tanterior = ListLenght(&terms);
-    while ((cnv = TermsConvine(&terms, &minterms)))
-    {
-        //printMinterms(&terms, nvars);
-        printf("eliminar %d terminos\n\n", tanterior);
-        for (int i = 0; i < tanterior; i++)
-        {
-            ListRemove(&terms, 0);
-        }
-
-        // puts("----");
-        // printMinterms(&terms, nvars);
-        tanterior = ListLenght(&terms);
-    }
+    findMinterms(&terms, &minterms);
 
     printf("\n> Minterminos");
     printMinterms(&minterms, nvars);
