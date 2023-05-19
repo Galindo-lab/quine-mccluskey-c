@@ -1,10 +1,11 @@
-/**
- * AUTOR: Luis Eduardo Galindo Amaya                           FECHA: 23-04-2023
+/**********************************************************************
+ * AUTOR: Luis Eduardo Galindo Amaya                  FECHA: 23-04-2023
  *
  * DESCRIPCIÓN:
- * En este archivo se almacenan todos los métodos para controlar una lista
- * enlazada.
- */
+ * En este archivo se almacenan todos los métodos para controlar una
+ * lista enlazada.
+ *********************************************************************/
+
 #ifndef linkedList
 #define linkedList
 

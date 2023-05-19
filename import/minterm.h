@@ -38,11 +38,7 @@ typedef struct Minterm
  */
 int bitState(BIT_TYPE value, int position)
 {
-    int mask = (1 << position);
-    int valueandmask = value & mask;
-    int var = valueandmask ? 1 : 0;
-
-    return var;
+    return (value & (1 << position)) ? 1 : 0;
 }
 
 /**
